@@ -1,0 +1,24 @@
+/*!
+Theme Name:   Nesteak.ru
+Theme URI:    https://nesteak.ru
+Author:       vfvb
+Author URI:   https://nesteak.ru
+Description:  Storefront based
+Version:      1.0.1
+Template:   storefront
+Tags:         e-commerce, two-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, featured-images, full-width-template, threaded-comments, accessibility-ready, rtl-language-support, footer-widgets, sticky-post, theme-options
+*/
+@import url("../storefront/style.css");
+.site-header{
+    background-image: url('https://nesteak.ru/wp-content/uploads/2018/07/cropped-bg_t.png');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100vw;
+    background-color: #ffffff;
+}
+.storefront-primary-navigation{
+    font-size: 120%;
+    font-weight: bold;
+    background-color: #68b04d;
+    color: #fff;
+}

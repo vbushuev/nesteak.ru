@@ -4,7 +4,7 @@
  *
  * Contains the closing of the #content div and all content after
  *
- * @package vffront
+ * @package storefront
  */
 
 ?>
@@ -15,61 +15,64 @@
 		</div><!-- .col-full -->
 	</div><!-- #content -->
 
-	<?php do_action( 'vffront_before_footer' ); ?>
-
 	<footer class="footer">
-				<!-- Нижний фон -->
-				<div class="tf"></div>
-				<!-- \ Нижний фон -->
+		<!-- Нижний фон -->
+		<?php if( get_field( 'line_footer','option' ) ): ?>
+			<div class="tf" style="background: url('<?php the_field('line_footer','option'); ?>') no-repeat center;"></div>
+		<?php endif; ?>
+		<!-- \ Нижний фон -->
 
-				<div class="shell v_center jcsb">
-					<div class="logo">
-						<a href="/">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/logo.png" alt="">
-						</a>
-						<ul class="soc flex v_center">
-							<li>
-								<a href="#">
-									<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/vk.png" alt="">
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/fb.png" alt="">
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/tw.png" alt="">
-								</a>
-							</li>
-						</ul>
-						<p>(с) НеСтейк 2018. Все права защищены.</p>
-					</div>
-					<nav class="nav_f">
-						<ul>
-							<li><a href="#">Оплата</a></li>
-							<li><a href="#">Возврат</a></li>
-							<li><a href="#">Оптовикам</a></li>
-							<li><a href="#">О компании</a></li>
-							<li><a href="#">Доставка</a></li>
-							<li><a href="#">Как заказать</a></li>
-							<li><a href="#">Новости</a></li>
-							<li><a href="#">Контакты</a></li>
-						</ul>
-					</nav>
-				</div>
+		<div class="shell v_center jcsb">
+			<div class="logo">
+				<a href="/">
+					<img src="<?php the_field('logo','option'); ?>" alt="">
+				</a>
 				<?php
-				/**
-				 * Functions hooked in to vffront_footer action
-				 *
-				 * @hooked vffront_footer_widgets - 10
-				 * @hooked vffront_credit         - 20
-				 */
-				do_action( 'vffront_footer' ); ?>
-			</footer>
+					if( have_rows('social','option') ): ?>
+						<ul class="soc flex v_center">
+					    <?php while ( have_rows('social','option') ) : the_row();
+					    	?>
+					        <li>
+								<a href="<?php the_sub_field('link','option'); ?>">
+									<img src="<?php the_sub_field('link_img','option'); ?>" alt="">
+								</a>
+							</li>
+							<?php
+					    endwhile;?>
+						</ul>
+					<?php else :
 
-	<?php do_action( 'vffront_after_footer' ); ?>
+					    // no rows found
+
+					endif;
+				?>
+				<p><?php the_field('copyright','option'); ?></p>
+			</div>
+			<nav class="nav_f">
+				<?php
+	            wp_nav_menu( array(
+					'theme_location'  => 'menu-footer',
+					'menu'            => 'footer', 
+					'container'       => 'ul', 
+					'container_class' => '', 
+					'container_id'    => '',
+					'menu_class'      => '', 
+					'menu_id'         => '',
+					'echo'            => true,
+					'fallback_cb'     => 'wp_page_menu',
+					'before'          => '',
+					'after'           => '',
+					'link_before'     => '',
+					'link_after'      => '',
+					'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+					'depth'           => 0,
+					'walker'          => '',
+	            ) );
+	          ?>
+	    	</nav>
+		</div>
+		
+	</footer>
 
 </div><!-- #page -->
 

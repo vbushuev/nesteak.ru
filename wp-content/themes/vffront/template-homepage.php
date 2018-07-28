@@ -261,65 +261,56 @@ get_header(); ?>
 		<div class="shell">
 			<!-- Блог -->
 			<div class="blog">
-				<h2>блог</h2>
-
+				<h2><?php echo get_cat_name( 59 ) ?></h2>
+				
 				<div class="owl-carousel slide_blog">
-					<div class="item">
-						<strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, eum.</strong>
-						<div class="img">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/blog.jpg" alt="">
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus asperiores possimus sed sint, ea tempore.</p>
-						<a href="#" class="more">Читать</a>
-					</div>
-					<div class="item">
-						<strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, eum.</strong>
-						<div class="img">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/blog.jpg" alt="">
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus asperiores possimus sed sint, ea tempore.</p>
-						<a href="#" class="more">Читать</a>
-					</div>
-					<div class="item">
-						<strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, eum.</strong>
-						<div class="img">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/blog.jpg" alt="">
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus asperiores possimus sed sint, ea tempore.</p>
-						<a href="#" class="more">Читать</a>
-					</div>
-					<div class="item">
-						<strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, eum.</strong>
-						<div class="img">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/blog.jpg" alt="">
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus asperiores possimus sed sint, ea tempore.</p>
-						<a href="#" class="more">Читать</a>
-					</div>
-					<div class="item">
-						<strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, eum.</strong>
-						<div class="img">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/blog.jpg" alt="">
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus asperiores possimus sed sint, ea tempore.</p>
-						<a href="#" class="more">Читать</a>
-					</div>
+
+					<?php 
+			            $news = new WP_Query('category__in=59&order=ASC&posts_per_page=-1'); ?>
+
+			            <?php if ( $news->have_posts() ) : ?>
+			            	
+			            <!-- the loop -->
+			            <?php while ( $news->have_posts() ) : $news->the_post(); ?>
+							<div class="item">
+								<strong><?php echo get_the_title(); ?></strong>
+								<div class="img">
+									<?php the_post_thumbnail(); ?>
+								</div>
+								<?php echo content('15'); ?>
+								<a href="<?php the_permalink() ?>" class="more">Читать</a>
+							</div>
+							<br />
+							<br />
+			            <?php endwhile; ?>
+						<!-- end of the loop -->
+
+						<!-- pagination here -->
+
+						<?php wp_reset_postdata(); ?>
+
+						</ul>
+
+					<?php else : ?>
+		            	<p><?php _e( 'По Вашему запросу ничего не найдено' ); ?></p>
+		            <?php endif; ?>
+					
 				</div>
 			</div>
 		</div>
 	</section>
+	
+	<?php if( '' !== get_post()->post_content ) { ?>
+		<section class="item about bgn">
+			<div class="shell column">
+				<!-- Блок About -->
+				<h2><?php the_title(); ?></h2>
+				<?php the_post(); the_content(); ?>
 
-	<section class="item about bgn">
-		<div class="shell column">
-			<!-- Блок About -->
-			<h2>О компании NeСтейк</h2>
-
-			<div class="text">
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ullam rem dolorum doloribus, et aspernatur corporis, aut placeat. Suscipit quia alias rerum asperiores esse, dignissimos aliquid ullam atque temporibus ipsum, eaque placeat dolores ad impedit maiores deserunt praesentium eligendi delectus sit voluptates similique beatae unde commodi. Numquam quisquam similique beatae.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde suscipit doloremque at amet consequuntur iste quod minus, nesciunt deserunt eos.</p>
 			</div>
-		</div>
-	</section>
+		</section>
+	<?php
+	} ?>	
 
 </main>
 
