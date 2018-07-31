@@ -6,3 +6,6 @@ Template: storefront
 */
 
 @import url("../storefront/style.css");
+.product .title p{
+    height: 4em;
+}

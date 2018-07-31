@@ -78,11 +78,11 @@
         	<?php
 	            wp_nav_menu( array(
 					'theme_location'  => 'menu-top',
-					'menu'            => 'main', 
-					'container'       => 'ul', 
-					'container_class' => '', 
+					'menu'            => 'main',
+					'container'       => 'ul',
+					'container_class' => '',
 					'container_id'    => '',
-					'menu_class'      => '', 
+					'menu_class'      => '',
 					'menu_id'         => '',
 					'echo'            => true,
 					'fallback_cb'     => 'wp_page_menu',
@@ -114,11 +114,11 @@
             </ul> -->
         </div>
     </nav>
-	
+
 	<?php
 		if( is_front_page() ) {
 			?>
-				
+
 				<!-- Слайдер -->
 			    <div class="owl-carousel slider_home">
 			        <div class="item item_slide flex v_center jcsb">
@@ -134,7 +134,69 @@
 			                    </ul>
 			                </div>
 			                <div class="inner">
-			                    <div class="product">
+								<!-- Товар -->
+								<?php
+									$args = array(
+			    						'post_type' => 'product',
+			    						'orderby' => 'rating',
+			    						'order' => 'desc',
+			    						'posts_per_page' => 1,
+										'meta_key' => '_sale_price',
+										'meta_value' => '0',
+										'meta_compare' => '>='
+									);
+									$loop = new WP_Query( $args );
+									while ( $loop->have_posts() ) : $loop->the_post();
+									global $product;
+								?>
+								<div class="product">
+									<div class="thumbnail">
+										<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );?>
+										<img src="<?php   echo empty($image[0])?woocommerce_placeholder_img_src():$image[0]; ?>" data-id="<?php echo $product->ID; ?>">
+									</div>
+									<div class="title">
+										<p><?php the_title(); ?></p>
+									</div>
+									<div class="description">
+										<p>
+											<?php echo $product->get_short_description(); ?>
+										</p>
+									</div>
+									<div class="review">
+										<div class="rate">
+											<?php
+												$rating = $product->get_rating_count();
+												for($i=0; $i<$rating; $i++)
+												{
+													echo '<span class="active"></span>';
+												}
+												for($i=0; $i<5-$rating; $i++)
+												{
+													echo '<span></span>';
+												}
+
+											?>
+
+										</div>
+										<div class="review_list">
+											<i class="ic ic_review"></i>
+											<span>16</span>
+											<span>отзывов</span>
+										</div>
+									</div>
+									<div class="price">
+										<div class="item">
+											<s><?php echo $product->get_regular_price(); ?></s>
+											<p><span><?php echo $product->get_sale_price(); ?></span> Р</p>
+										</div>
+										<div class="item">
+											<form action="<?php the_permalink(); ?>"><input type="submit" value="Купить"></form>
+											<a href="<?php echo $product->add_to_cart_url(); ?>" class="onclick">Купить в 1 клик</a>
+										</div>
+									</div>
+								</div>
+
+			                    <!-- <div class="product">
 			                        <div class="prod_day">Товар дня</div>
 			                        <div class="top">
 			                            <div class="timer">
@@ -170,7 +232,9 @@
 			                            </div>
 			                            <input type="submit" value="Купить">
 			                        </div>
-			                    </div>
+			                    </div> -->
+								<?php endwhile; ?>
+								<?php wp_reset_query(); ?>
 			                </div>
 			            </div>
 			        </div>
@@ -179,5 +243,5 @@
 			<?php
 		}
 	?>
-    
+
 </header>

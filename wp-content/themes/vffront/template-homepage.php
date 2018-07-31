@@ -14,42 +14,19 @@
 
 get_header(); ?>
 <main class="main">
-
-	<section class="item">
-		<div class="shell">
-			<!-- Перечень категорий -->
-			<div class="cat">
-				<h2>Выберите продукцию</h2>
-
-				<ul class="flex jcsb v_center">
-					<li>
-						<h3>Для детей</h3>
-						<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/cat_child.png" alt="">
-						<div>
-							<p>Краткая информация о продукции в несколько строчек и кнопка подробнее для просмотра остальной информации.</p>
-							<a href="#" class="info">Подробнее</a>
-						</div>
-					</li>
-					<li>
-						<h3>Для взрослых</h3>
-						<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/cat_man.png" alt="">
-						<div>
-							<p>Краткая информация о продукции в несколько строчек и кнопка подробнее для просмотра остальной информации.</p>
-							<a href="#" class="info">Подробнее</a>
-						</div>
-					</li>
-					<li>
-						<h3>Для домашних питомцев</h3>
-						<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/cat_dogs.png" alt="">
-						<div>
-							<p>Краткая информация о продукции в несколько строчек и кнопка подробнее для просмотра остальной информации.</p>
-							<a href="#" class="info">Подробнее</a>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</section>
+	<?php
+	/**
+	 * Functions hooked in to homepage action
+	 *
+	 * @hooked storefront_homepage_content      - 10
+	 * @hooked storefront_product_categories    - 20
+	 * @hooked storefront_recent_products       - 30
+	 * @hooked storefront_featured_products     - 40
+	 * @hooked storefront_popular_products      - 50
+	 * @hooked storefront_on_sale_products      - 60
+	 * @hooked storefront_best_selling_products - 70
+	 */
+	do_action( 'homepage' ); ?>
 
 	<section class="item">
 		<div class="shell">
@@ -101,25 +78,48 @@ get_header(); ?>
 
 				<div class="list_product">
 					<!-- Товар -->
+					<?php
+						$args = array(
+    						'post_type' => 'product',
+    						'orderby' => 'rating',
+    						'order' => 'desc',
+    						'posts_per_page' => 4,
+							'meta_key' => '_regular_price',
+							'meta_value' => '0',
+							'meta_compare' => '>='
+						);
+						$loop = new WP_Query( $args );
+						while ( $loop->have_posts() ) : $loop->the_post();
+						global $product;
+					?>
 					<div class="product">
 						<div class="thumbnail">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/tov.png" alt="">
+							<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );?>
+							<img src="<?php   echo empty($image[0])?woocommerce_placeholder_img_src():$image[0]; ?>" data-id="<?php echo $product->ID; ?>">
 						</div>
 						<div class="title">
-							<p>Говядина + сердце (СБ) 100 г</p>
+							<p><?php the_title(); ?></p>
 						</div>
 						<div class="description">
 							<p>
-								Состав: говядина, вода питьевая, сердце говяжье, масло подсолнечное, крахмал картофельный как загуститель (3 %), соль йодированная.
+								<?php echo $product->get_short_description(); ?>
 							</p>
 						</div>
 						<div class="review">
 							<div class="rate">
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span></span>
+								<?php
+									$rating = $product->get_rating_count();
+									for($i=0; $i<$rating; $i++)
+									{
+										echo '<span class="active"></span>';
+									}
+									for($i=0; $i<5-$rating; $i++)
+									{
+										echo '<span></span>';
+									}
+
+								?>
+
 							</div>
 							<div class="review_list">
 								<i class="ic ic_review"></i>
@@ -129,129 +129,17 @@ get_header(); ?>
 						</div>
 						<div class="price">
 							<div class="item">
-								<s>250</s>
-								<p><span>190</span> Р</p>
+								<s><?php echo $product->get_regular_price(); ?></s>
+								<p><span><?php echo $product->get_sale_price(); ?></span> Р</p>
 							</div>
 							<div class="item">
-								<input type="submit" value="Купить">
-								<a href="#" class="onclick">Купить в 1 клик</a>
+								<form action="<?php the_permalink(); ?>"><input type="submit" value="Купить"></form>
+								<a href="<?php echo $product->add_to_cart_url(); ?>" class="onclick">Купить в 1 клик</a>
 							</div>
 						</div>
 					</div>
-					<!-- Товар -->
-					<div class="product">
-						<div class="thumbnail">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/tov.png" alt="">
-						</div>
-						<div class="title">
-							<p>Говядина + сердце (СБ) 100 г</p>
-						</div>
-						<div class="description">
-							<p>
-								Состав: говядина, вода питьевая, сердце говяжье, масло подсолнечное, крахмал картофельный как загуститель (3 %), соль йодированная.
-							</p>
-						</div>
-						<div class="review">
-							<div class="rate">
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span></span>
-							</div>
-							<div class="review_list">
-								<i class="ic ic_review"></i>
-								<span>16</span>
-								<span>отзывов</span>
-							</div>
-						</div>
-						<div class="price">
-							<div class="item">
-								<s>250</s>
-								<p><span>190</span> Р</p>
-							</div>
-							<div class="item">
-								<input type="submit" value="Купить">
-								<a href="#" class="onclick">Купить в 1 клик</a>
-							</div>
-						</div>
-					</div>
-					<!-- Товар -->
-					<div class="product">
-						<div class="thumbnail">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/tov.png" alt="">
-						</div>
-						<div class="title">
-							<p>Говядина + сердце (СБ) 100 г</p>
-						</div>
-						<div class="description">
-							<p>
-								Состав: говядина, вода питьевая, сердце говяжье, масло подсолнечное, крахмал картофельный как загуститель (3 %), соль йодированная.
-							</p>
-						</div>
-						<div class="review">
-							<div class="rate">
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span></span>
-							</div>
-							<div class="review_list">
-								<i class="ic ic_review"></i>
-								<span>16</span>
-								<span>отзывов</span>
-							</div>
-						</div>
-						<div class="price">
-							<div class="item">
-								<s>250</s>
-								<p><span>190</span> Р</p>
-							</div>
-							<div class="item">
-								<input type="submit" value="Купить">
-								<a href="#" class="onclick">Купить в 1 клик</a>
-							</div>
-						</div>
-					</div>
-					<!-- Товар -->
-					<div class="product">
-						<div class="thumbnail">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/tov.png" alt="">
-						</div>
-						<div class="title">
-							<p>Говядина + сердце (СБ) 100 г</p>
-						</div>
-						<div class="description">
-							<p>
-								Состав: говядина, вода питьевая, сердце говяжье, масло подсолнечное, крахмал картофельный как загуститель (3 %), соль йодированная.
-							</p>
-						</div>
-						<div class="review">
-							<div class="rate">
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span class="active"></span>
-								<span></span>
-							</div>
-							<div class="review_list">
-								<i class="ic ic_review"></i>
-								<span>16</span>
-								<span>отзывов</span>
-							</div>
-						</div>
-						<div class="price">
-							<div class="item">
-								<s>250</s>
-								<p><span>190</span> Р</p>
-							</div>
-							<div class="item">
-								<input type="submit" value="Купить">
-								<a href="#" class="onclick">Купить в 1 клик</a>
-							</div>
-						</div>
-					</div>
+				<?php endwhile; ?>
+				<?php wp_reset_query(); ?>
 				</div>
 			</div>
 		</div>
@@ -262,14 +150,14 @@ get_header(); ?>
 			<!-- Блог -->
 			<div class="blog">
 				<h2><?php echo get_cat_name( 59 ) ?></h2>
-				
+
 				<div class="owl-carousel slide_blog">
 
-					<?php 
+					<?php
 			            $news = new WP_Query('category__in=59&order=ASC&posts_per_page=-1'); ?>
 
 			            <?php if ( $news->have_posts() ) : ?>
-			            	
+
 			            <!-- the loop -->
 			            <?php while ( $news->have_posts() ) : $news->the_post(); ?>
 							<div class="item">
@@ -294,12 +182,12 @@ get_header(); ?>
 					<?php else : ?>
 		            	<p><?php _e( 'По Вашему запросу ничего не найдено' ); ?></p>
 		            <?php endif; ?>
-					
+
 				</div>
 			</div>
 		</div>
 	</section>
-	
+
 	<?php if( '' !== get_post()->post_content ) { ?>
 		<section class="item about bgn">
 			<div class="shell column">
@@ -310,7 +198,7 @@ get_header(); ?>
 			</div>
 		</section>
 	<?php
-	} ?>	
+	} ?>
 
 </main>
 
