@@ -7,8 +7,8 @@
 
 get_header(); ?>
 
-	<main class="main" role="main">
-		<h1></h1>
+		<main class="main">
+
 		<?php while ( have_posts() ) : the_post();
 
 			do_action( 'storefront_single_post_before' );

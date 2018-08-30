@@ -9,7 +9,8 @@
 
 get_header(); ?>
 <main class="main">
-
+	<div class="shell column">
+		
 			<?php while ( have_posts() ) : the_post();
 
 				do_action( 'storefront_page_before' );
@@ -24,7 +25,7 @@ get_header(); ?>
 				do_action( 'storefront_page_after' );
 
 			endwhile; // End of the loop. ?>
-
+	</div>
 </main><!-- #main -->
 
 <?php

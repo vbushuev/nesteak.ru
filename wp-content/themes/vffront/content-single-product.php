@@ -29,8 +29,7 @@ if ( post_password_required() ) {
 	return;
 }
 ?>
-<div class="shell column">
-	<div id="product-<?php the_ID(); ?>" <?php wc_product_class(); ?>>
+	<div class="product_contain" id="product-<?php the_ID(); ?>" <?php wc_product_class(); ?>>
 
 		<?php
 			/**
@@ -71,6 +70,5 @@ if ( post_password_required() ) {
 			do_action( 'woocommerce_after_single_product_summary' );
 		?>
 	</div>
-</div>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>

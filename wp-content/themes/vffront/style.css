@@ -9,3 +9,15 @@ Template: storefront
 .product .title p{
     height: 4em;
 }
+main.main article{
+    padding: 1em 10%;
+}
+#main header .term-description {
+    display: none !important;
+}
+.hentry.type-post .entry-content{
+    width: 100%!important;
+}
+.wcj_product_wholesale_price_table{
+    
+}

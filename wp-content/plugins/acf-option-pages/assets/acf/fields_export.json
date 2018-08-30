@@ -1,0 +1,292 @@
+[
+    {
+        "key": "group_572b269b668a4",
+        "title": "ACF Options Page",
+        "fields": [
+            {
+                "key": "field_572c743c5ec6a",
+                "label": "Basic Settings",
+                "name": "_copy",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "left",
+                "endpoint": 0
+            },
+            {
+                "key": "field_572b520a521df",
+                "label": "Menu Title",
+                "name": "menu_title",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572b536cc951c",
+                "label": "Menu Slug",
+                "name": "menu_slug",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572b53a662e19",
+                "label": "Make Option Subpage",
+                "name": "is_subpage",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0
+            },
+            {
+                "key": "field_572b55e32ea4b",
+                "label": "Menu Parent",
+                "name": "parent_slug",
+                "type": "text",
+                "instructions": "Enter the slug from the parent menu. This options page will become a subpage under the menu item you enter here. ",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_572b53a662e19",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572c6e079987b",
+                "label": "Advanced Settings",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "left",
+                "endpoint": 0
+            },
+            {
+                "key": "field_572b539493914",
+                "label": "Redirect",
+                "name": "redirect",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_572b53a662e19",
+                            "operator": "!=",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1
+            },
+            {
+                "key": "field_572c769aec9f7",
+                "label": "Position",
+                "name": "position",
+                "type": "text",
+                "instructions": "The position in the menu order this menu should appear. \r\n\r\nWARNING: if two menu items use the same position attribute, one of the items may be overwritten so that only one item displays!\r\n\r\nRisk of conflict can be reduced by using decimal instead of integer values, e.g. '63.3' instead of 63.\r\n\r\nDefaults to bottom of utility menu items.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572c7f4619e57",
+                "label": "Menu Icon",
+                "name": "icon_url",
+                "type": "text",
+                "instructions": "The icon url for this menu. Enter either a URL or a WP Dashicon code. See available codes at https:\/\/developer.wordpress.org\/resource\/dashicons\/. Defaults to default WordPress gear.",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_572b53a662e19",
+                            "operator": "!=",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572b537e02411",
+                "label": "Capability",
+                "name": "capability",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572c735261295",
+                "label": "Post ID",
+                "name": "post_id",
+                "type": "text",
+                "instructions": "The '$post_id' to save\/load data to\/from. Can be set to a numeric post ID (123), or a string ('user_2'). Default is \"option\" and in practice data can also be loaded using key \"options\".",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": "",
+                "readonly": 0,
+                "disabled": 0
+            },
+            {
+                "key": "field_572c74b1e716e",
+                "label": "Autoload",
+                "name": "autoload",
+                "type": "true_false",
+                "instructions": "Whether to load the option (values saved from this options page) when WordPress starts up. Defaults to false. ",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "acf_option_page"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [
+            "permalink",
+            "the_content",
+            "excerpt",
+            "custom_fields",
+            "discussion",
+            "comments",
+            "revisions",
+            "slug",
+            "author",
+            "format",
+            "page_attributes",
+            "featured_image",
+            "categories",
+            "tags",
+            "send-trackbacks"
+        ],
+        "active": 1,
+        "description": ""
+    }
+]

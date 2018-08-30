@@ -26,51 +26,62 @@ get_header(); ?>
 	 * @hooked storefront_on_sale_products      - 60
 	 * @hooked storefront_best_selling_products - 70
 	 */
-	do_action( 'homepage' ); ?>
+	//do_action( 'homepage' ); ?>
 
-	<section class="item">
+	<section class="item" style="background: url('<?php the_field('line_section') ?>') no-repeat top center/contain">
+        <div class="shell">
+        	<!-- Перечень категорий -->
+        	<div class="cat">
+        		<h2>Выберите продукцию</h2>
+
+    			<?php
+	                $args = array(
+	                    'taxonomy' => 'product_cat',
+	                    'orderby'    => 'count',
+	                    'order'      => 'DESC',
+	                    'category__in' => '55,60,61',
+	                    'hide_empty' => false
+	                );
+
+	                $product_categories = get_terms( $args );
+	                $product_category = wp_get_post_terms($post->ID,'product_cat', $args);
+
+
+	                $count = count($product_categories);
+	                if ( $count > 0 ){
+	                    echo '<ul class="flex jcsb v_center">';
+	                    foreach ( $product_categories as $product_category ) {
+							// $categ = $_product->get_categories();
+						    // $term = get_term_by ( 'name' , strip_tags($categ), 'product_cat' );
+
+							if(!in_array($product_category->term_id,[55,60,61]))continue;
+							// echo json_encode($product_category);
+							$category_thumbnail = get_woocommerce_term_meta($product_category->term_id, 'thumbnail_id', true);
+						    $image = wp_get_attachment_url($category_thumbnail);
+	                    	echo '<li  class="catalogue-menu-item"><h3>' . $product_category->name . '</h3>' . '<img alt="" src="'.$image.'" />' . '<div>
+            					<p>' . $product_category->description . '</p>' . '<a class="info" href="' . get_term_link( $product_category ) . '">Подробнее</a></li>';
+
+	                    }
+	                    echo "</ul>";
+	                }
+                ?>
+
+
+        	</div>
+        </div>
+    </section>
+
+	<section class="item" style="background: url('<?php the_field('line_section') ?>') no-repeat top center/contain">
 		<div class="shell">
 			<!-- Перечень брендов -->
 			<div class="brand width">
 				<h2>Бренды</h2>
-
-				<ul class="flex v_center jcsb width">
-					<li>
-						<a href="#">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/omkk.png" alt="">
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/baby_hit.png" alt="">
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/l_in_l.png" alt="">
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/indusha.png" alt="">
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/pipa.png" alt="">
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="<?php bloginfo('stylesheet_directory');?>/assets/images/m_com.png" alt="">
-						</a>
-					</li>
-				</ul>
+	                <?php echo do_shortcode('[pwb-all-brands per_page="10" image_size="thumbnail" hide_empty="false" order_by="name" order="ASC" title_position="none"]'); ?>
 			</div>
 		</div>
 	</section>
 
-	<section class="item">
+	<section class="item" style="background: url('<?php the_field('line_section') ?>') no-repeat top center/contain">
 		<div class="shell">
 			<!-- Перечень товаров -->
 			<div class="popular">
@@ -79,109 +90,129 @@ get_header(); ?>
 				<div class="list_product">
 					<!-- Товар -->
 					<?php
-						$args = array(
-    						'post_type' => 'product',
-    						'orderby' => 'rating',
-    						'order' => 'desc',
-    						'posts_per_page' => 4,
-							'meta_key' => '_regular_price',
-							'meta_value' => '0',
-							'meta_compare' => '>='
-						);
-						$loop = new WP_Query( $args );
-						while ( $loop->have_posts() ) : $loop->the_post();
-						global $product;
-					?>
-					<div class="product">
-						<div class="thumbnail">
-							<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );?>
-							<img src="<?php   echo empty($image[0])?woocommerce_placeholder_img_src():$image[0]; ?>" data-id="<?php echo $product->ID; ?>">
-						</div>
-						<div class="title">
-							<p><?php the_title(); ?></p>
-						</div>
-						<div class="description">
-							<p>
-								<?php echo $product->get_short_description(); ?>
-							</p>
-						</div>
-						<div class="review">
-							<div class="rate">
-								<?php
-									$rating = $product->get_rating_count();
-									for($i=0; $i<$rating; $i++)
-									{
-										echo '<span class="active"></span>';
-									}
-									for($i=0; $i<5-$rating; $i++)
-									{
-										echo '<span></span>';
-									}
+						$list_product = new WP_Query('post_type=popular_goods&order=ASC&posts_per_page=-1');
+						if ( $list_product->have_posts() ) : ?>
+						<!-- the loop -->
+		              	<?php while ( $list_product->have_posts() ) : $list_product->the_post(); ?>
 
-								?>
+							<a href="<?php the_field('link_list_product'); ?>">
+								<div class="product">
+			                        <div class="thumbnail">
+			                        	<?php the_post_thumbnail(); ?>
+			                            <!-- <img src="images/tov.png" alt=""> -->
+			                        </div>
+			                        <div class="title">
+			                        	<p><?php echo get_the_title(); ?></p>
+			                            <!-- <p>Говядина + сердце (СБ) 100 г</p> -->
+			                        </div>
+			                        <div class="description">
+			                        	<p>
+			                        		<?php the_field('list_product_desc'); ?>
+			                        	</p>
+			                        </div>
+			                        <div class="review">
+			                        	<div class="rate">
+			                            	<?php
+			                            		$rate_list_product = get_field('rate_list_product');
+												    if ( !empty( $rate_list_product ) ) :
+												    	the_field('rate_list_product');
+												endif;
+			                            	?>
+			                            </div>
+			                            <?php
+			                        		$review_list_product = get_field('review_list_product');
+											    if ( !empty( $review_list_product ) ) :
+											    	?>
 
-							</div>
-							<div class="review_list">
-								<i class="ic ic_review"></i>
-								<span>16</span>
-								<span>отзывов</span>
-							</div>
-						</div>
-						<div class="price">
-							<div class="item">
-								<s><?php echo $product->get_regular_price(); ?></s>
-								<p><span><?php echo $product->get_sale_price(); ?></span> Р</p>
-							</div>
-							<div class="item">
-								<form action="<?php the_permalink(); ?>"><input type="submit" value="Купить"></form>
-								<a href="<?php echo $product->add_to_cart_url(); ?>" class="onclick">Купить в 1 клик</a>
-							</div>
-						</div>
-					</div>
-				<?php endwhile; ?>
-				<?php wp_reset_query(); ?>
+											    	<div class="review_list">
+											    		<i class="ic ic_review"></i>
+											    	<?php
+											    		the_field('review_list_product');
+											    	?>
+											    	</div>
+											    	<?php
+											endif;
+			                        	?>
+			                        </div>
+			                        <div class="price">
+			                            <div class="item">
+			                            	<s><?php the_field('old_price_list_product'); ?></s>
+			                            	<p><?php the_field('new_price_list_product'); ?></p>
+			                            </div>
+			                            <div class="item">
+			                            	<input type="submit" value="Купить">
+			                            	<a data-id="<?php the_field("product_id");?>" data-url="<?php the_field('link_list_product'); ?>" href="" class="onclick one-click-buy">Купить в 1 клик</a>
+
+			                            </div>
+			                        </div>
+			                    </div>
+			                </a>
+			            <?php endwhile; ?>
+	              		<!-- end of the loop -->
+
+	              	<!-- pagination here -->
+
+	              	<?php wp_reset_postdata(); ?>
+	              	<?php else : ?>
+		              <p><?php _e( 'Статей нет' ); ?></p>
+		            <?php endif; ?>
 				</div>
 			</div>
 		</div>
+		<script>
+			$(document).ready(function(){
+				$('.one-click-buy').on('click',function(e){
+					e.preventDefault();
+ 					const id = $(this).data('id');
+					const ajax_url = "/wp-admin/admin-ajax.php";
+
+					$.ajax ({
+ 						url: ajax_url,
+ 						type:'POST',
+ 						data:{
+							action: 'oneclick',
+							product_id: id,
+							quantity: 1
+						},//`action=onelick&product_id=${product_id}&quantity=1`,
+ 						success:function(results) {
+							const cart = JSON.parse(results);
+							console.debug(cart);
+							$('body > header > div.top > div > div.basket > a > div > sup').text(cart.item_count);
+							$('body > header > div.top > div > div.basket > a > div > sup').html('<span class="woocommerce-Price-amount amount">'+cart.cart_contents_total+'<span class="woocommerce-Price-currencySymbol">₽</span></span>');
+    						location.href = '/checkout'; //Переход на оформление заказа
+  						}
+					});
+				});
+			});
+		</script>
 	</section>
 
-	<section class="item">
+	<section class="item" style="background: url('<?php the_field('line_section') ?>') no-repeat top center/contain">
 		<div class="shell">
 			<!-- Блог -->
 			<div class="blog">
 				<h2><?php echo get_cat_name( 59 ) ?></h2>
 
-				<div class="owl-carousel slide_blog">
-
+				<div class="slide_blog">
 					<?php
-			            $news = new WP_Query('category__in=59&order=ASC&posts_per_page=-1'); ?>
+					$categories = get_categories( ['parent' => 59,'hide_empty' => 0] );
 
-			            <?php if ( $news->have_posts() ) : ?>
 
-			            <!-- the loop -->
-			            <?php while ( $news->have_posts() ) : $news->the_post(); ?>
-							<div class="item">
-								<strong><?php echo get_the_title(); ?></strong>
-								<div class="img">
-									<?php the_post_thumbnail(); ?>
-								</div>
-								<?php echo content('15'); ?>
-								<a href="<?php the_permalink() ?>" class="more">Читать</a>
-							</div>
-							<br />
-							<br />
-			            <?php endwhile; ?>
-						<!-- end of the loop -->
+					foreach($categories as $category) {
+						// получим ID картинки из метаполя термина
+						$image_id = get_term_meta( $category->term_id, '_thumbnail_id', 1 );
+						// ссылка на полный размер картинки по ID вложения
+						$image_url = wp_get_attachment_image_url( $image_id, 'full' );
 
-						<!-- pagination here -->
+						echo '<div class="item">';
+						echo '<a href="'.get_category_link( $category->term_id ).'" class="more">';
+						echo '<strong>'.$category->name.'</strong>';
+						echo '<div class="img"><img src="'. $image_url .'" alt="" /></div>';
+						echo '</a>';
+						echo '</div>';
+					}
+					?>
 
-						<?php wp_reset_postdata(); ?>
-
-						</ul>
-
-					<?php else : ?>
-		            	<p><?php _e( 'По Вашему запросу ничего не найдено' ); ?></p>
-		            <?php endif; ?>
 
 				</div>
 			</div>
@@ -193,7 +224,10 @@ get_header(); ?>
 			<div class="shell column">
 				<!-- Блок About -->
 				<h2><?php the_title(); ?></h2>
-				<?php the_post(); the_content(); ?>
+				<div class="limit">
+					<?php the_post(); the_content(); ?>
+					<a href="#">Читать ещё</a>
+				</div>
 
 			</div>
 		</section>
