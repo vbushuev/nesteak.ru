@@ -58,7 +58,14 @@ if ( post_password_required() ) {
 				do_action( 'woocommerce_single_product_summary' );
 			?>
 		</div>
-
+		<div class="table discount">
+			<p>Обратите внимание! На скидки</p>
+			<table>
+				<tr><td>от  3500</td><td>2%</td></tr>
+				<tr><td>от  5000</td><td>3%</td></tr>
+				<tr><td>от 15000</td><td>5%</td></tr>
+			</table>
+		</div>
 		<?php
 			/**
 			 * Hook: woocommerce_after_single_product_summary.

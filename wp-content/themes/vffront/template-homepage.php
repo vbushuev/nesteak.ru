@@ -193,7 +193,7 @@ get_header(); ?>
 			<div class="blog">
 				<h2><?php echo get_cat_name( 59 ) ?></h2>
 
-				<div class="slide_blog">
+				<div class="owl-carousel slide_blog">
 					<?php
 					$categories = get_categories( ['parent' => 59,'hide_empty' => 0] );
 

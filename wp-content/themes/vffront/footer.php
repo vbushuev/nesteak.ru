@@ -52,11 +52,11 @@
 				<?php
 	            wp_nav_menu( array(
 					'theme_location'  => 'menu-footer',
-					'menu'            => 'footer', 
-					'container'       => 'ul', 
-					'container_class' => '', 
+					'menu'            => 'footer',
+					'container'       => 'ul',
+					'container_class' => '',
 					'container_id'    => '',
-					'menu_class'      => '', 
+					'menu_class'      => '',
 					'menu_id'         => '',
 					'echo'            => true,
 					'fallback_cb'     => 'wp_page_menu',
@@ -71,7 +71,7 @@
 	          ?>
 	    	</nav>
 		</div>
-		
+
 	</footer>
 
 </div><!-- #page -->
@@ -81,3 +81,41 @@
 
 </body>
 </html>
+<script>
+	const showDiscount = () => {
+		const total_discount = $('.cart-discount .amount').text().replace(/[\D]+/ig,'');
+		const sub_total = $('.cart-subtotal .amount').text().replace(/[\D]+/ig,'');
+
+		if(total_discount && sub_total){
+			const percent = Math.floor(100*total_discount/sub_total);
+			console.debug('subtotal found',total_discount/sub_total,total_discount,sub_total,percent)
+
+			$('.woocommerce-remove-coupon').remove();
+			$('.cart-discount.coupon-discount th').text('Скидка');
+			$('.cart-discount.coupon-discount td .amount').css('display','inline-block');
+
+			$('.cart_item > .product-subtotal,.cart_item > .product-total').each(function(){
+				let price = parseFloat($(this).find('.amount').text().replace(/[\D]+/ig,''))/100;
+				let newPrice = (price*(100-percent)/100).toFixed(2);
+				console.debug('this price',percent,price,price*(100-percent)/100);
+				$(this).find('.amount').addClass('amount-stroke');
+				$(this).append(`<span class="woocommerce-Price-amount amount"><small>-${percent}%</small>&nbsp;&nbsp;${newPrice}<span class="woocommerce-Price-currencySymbol">₽</span></span>`)
+			});
+		}
+	};
+	$.ajaxSetup({
+		global: true
+	});
+	$(document).ready(function(){
+		showDiscount();
+	});
+	$( document.body ).on( 'updated_cart_totals', function(){
+		console.debug('ajax updated_cart_totals');
+  		showDiscount();
+	});
+	$(document).ajaxComplete(function() {
+	// $(document).ajaxStop(function() {
+		console.debug('ajax complete');
+  		showDiscount();
+	});
+</script>
