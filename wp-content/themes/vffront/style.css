@@ -21,3 +21,12 @@ main.main article{
 .wcj_product_wholesale_price_table{
     
 }
+
+body main.main article {
+    padding: 1em 0;
+    position: relative;
+  }
+  article .ymaps {
+    position: absolute;
+    bottom: 20px;
+  }

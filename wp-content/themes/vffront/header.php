@@ -54,9 +54,14 @@
 	                </a>
 	            </div>
 	            <div class="con flex v_center jcsa">
-	            	<a href="tel:<?php echo str_replace(array(' ', '<', '>', 'span', '/', ')', '(', '+', '-'), '', get_field('tel', 'option')); ?>">
-						<?php the_field('tel', 'option'); ?>
-					</a>
+	            	<div class="tell flex column v_center">
+		            	<a href="tel:<?php echo str_replace(array(' ', '<', '>', 'span', '/', ')', '(', '+', '-'), '', get_field('tel', 'option')); ?>">
+							<?php the_field('tel', 'option'); ?>
+						</a>
+						<a href="tel:<?php echo str_replace(array(' ', '<', '>', 'span', '/', ')', '(', '+', '-'), '', get_field('tel2', 'option')); ?>">
+							<?php the_field('tel2', 'option'); ?>
+						</a>
+					</div>
 	                <?php the_field('info','option'); ?>
 	            </div>
 	            <div class="basket">
@@ -92,7 +97,7 @@
 
 	    <!-- Основная навигация -->
 	    <nav class="nav">
-	        <div class="shell">
+	        <div class="shell jcsb v_center">
 	        	<?php
 		            wp_nav_menu( array(
 						'theme_location'  => 'menu-top',
@@ -113,23 +118,9 @@
 						'walker'          => '',
 		            ) );
 		          ?>
-	            <!-- <ul>
-	                <li class="menu_cat">
-	                    <a href="#">Каталог продукции</a>
-	                    <ul class="submenu">
-	                        <li><a href="#">Прод1</a></li>
-	                        <li><a href="#">Прод2</a></li>
-	                        <li><a href="#">Прод3</a></li>
-	                        <li><a href="#">Прод4</a></li>
-	                        <li><a href="#">Прод5</a></li>
-	                        <li><a href="#">Прод6</a></li>
-	                    </ul>
-	                </li>
-	                <li><a href="#">О продукции</a></li>
-	                <li><a href="#">Оплата и доставка</a></li>
-	                <li><a href="#">Информация</a></li>
-	                <li><a href="#">Контакты</a></li>
-	            </ul> -->
+		          <div class="search">
+		          	<?php get_product_search_form(); ?>
+			    </div>
 	        </div>
 	    </nav>
 		

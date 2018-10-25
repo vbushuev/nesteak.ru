@@ -81,6 +81,11 @@
 
 </body>
 </html>
+<style>
+	.address-field,.woocommerce-shipping-fields{
+		display: none;
+	}
+</style>
 <script>
 	const showDiscount = () => {
 		const total_discount = $('.cart-discount .amount').text().replace(/[\D]+/ig,'');
@@ -103,19 +108,42 @@
 			});
 		}
 	};
+	const shippingShow = () => {
+		console.debug('shippings',$('#shipping_method .shipping_method').length)
+		$('#shipping_method .shipping_method:not(.assigned)').on('click change',function(){
+			const shipping = $('#shipping_method input.shipping_method').val();
+			console.debug('change shiping',shipping)
+			if(shipping == 'local_pickup:3'){
+				$('.address-field,.woocommerce-shipping-fields').hide();
+			}
+			else $('.address-field,.woocommerce-shipping-fields').show();
+		}).addClass('assigned');
+	}
+	const showMap = () => {
+		if($('.cart_item > .product-subtotal,.cart_item > .product-total').length){
+			$('.ymaps').show();
+		}else $('.ymaps').hide();
+	}
 	$.ajaxSetup({
 		global: true
 	});
 	$(document).ready(function(){
+		$('.address-field').hide();
 		showDiscount();
+		shippingShow();
+		showMap();
 	});
 	$( document.body ).on( 'updated_cart_totals', function(){
 		console.debug('ajax updated_cart_totals');
   		showDiscount();
+		shippingShow();
+		showMap();
 	});
 	$(document).ajaxComplete(function() {
 	// $(document).ajaxStop(function() {
 		console.debug('ajax complete');
   		showDiscount();
+		shippingShow();
+		showMap();
 	});
 </script>
