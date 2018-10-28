@@ -82,9 +82,9 @@
 </body>
 </html>
 <style>
-	.address-field,.woocommerce-shipping-fields{
+	/* .address-field,.woocommerce-shipping-fields{
 		display: none;
-	}
+	} */
 </style>
 <script>
 	const showDiscount = () => {
@@ -108,42 +108,55 @@
 			});
 		}
 	};
+	const shippingMethodSelector = 'select.shipping_method'
+	const checkShipping = () =>{
+		const shipping = $(shippingMethodSelector).val();
+		const regex = /local_pickup/ig;
+		console.debug('change shiping',shipping, regex.test(shipping));
+		if(shipping.match(/.*local_pickup.*/))$('.address-field,.woocommerce-shipping-fields').hide(); else $('.address-field,.woocommerce-shipping-fields').show();
+	}
 	const shippingShow = () => {
-		console.debug('shippings',$('#shipping_method .shipping_method').length)
-		$('#shipping_method .shipping_method:not(.assigned)').on('click change',function(){
-			const shipping = $('#shipping_method input.shipping_method').val();
-			console.debug('change shiping',shipping)
-			if(shipping == 'local_pickup:3'){
-				$('.address-field,.woocommerce-shipping-fields').hide();
-			}
-			else $('.address-field,.woocommerce-shipping-fields').show();
-		}).addClass('assigned');
+		if(!$(shippingMethodSelector).length) return;
+		// $('.address-field').hide();
+		checkShipping();
+		$(shippingMethodSelector).on('click change',checkShipping).addClass('assigned');
 	}
 	const showMap = () => {
 		if($('.cart_item > .product-subtotal,.cart_item > .product-total').length){
 			$('.ymaps').show();
 		}else $('.ymaps').hide();
 	}
-	$.ajaxSetup({
-		global: true
-	});
-	$(document).ready(function(){
-		$('.address-field').hide();
+	// jQuery.ajaxSetup({
+	// 	global: true,
+	// 	complete: ()=>{
+	// 		console.debug('ajax complete global');
+	//   		showDiscount();
+	// 		shippingShow();
+	// 		showMap();
+	// 	}
+	// });
+	jQuery(document).ready(function(){
 		showDiscount();
 		shippingShow();
 		showMap();
 	});
-	$( document.body ).on( 'updated_cart_totals', function(){
-		console.debug('ajax updated_cart_totals');
+	// $( document.body ).on( 'updated_cart_totals', function(){
+	// 	console.debug('ajax updated_cart_totals');
+  	// 	showDiscount();
+	// 	shippingShow();
+	// 	showMap();
+	// });
+	jQuery( document ).on( 'updated_checkout updated_checkout updated_cart_totals', function(){
+		console.debug('updated_checkout updated_checkout updated_cart_totals');
   		showDiscount();
 		shippingShow();
 		showMap();
 	});
-	$(document).ajaxComplete(function() {
-	// $(document).ajaxStop(function() {
-		console.debug('ajax complete');
-  		showDiscount();
-		shippingShow();
-		showMap();
-	});
+	// jQuery(document).ajaxComplete(function() {
+	// // $(document).ajaxStop(function() {
+	// 	console.debug('ajax complete');
+  	// 	showDiscount();
+	// 	shippingShow();
+	// 	showMap();
+	// });
 </script>

@@ -22,15 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <tr class="shipping">
-	<th><?php echo wp_kses_post( $package_name ); ?></th>
+	<!-- <th><?php //echo wp_kses_post( $package_name ); ?></th> -->
+	<th>Выбрать зону доставки</th>
 	<td data-title="<?php echo esc_attr( $package_name ); ?>">
 		<?php if ( 1 < count( $available_methods ) ) : ?>
-			<select name="" id="shipping_method">
+			<select name="" id="shipping_method" class="shipping_method" name="shipping_method[0]" data-index="0">
 				<?php foreach ( $available_methods as $method ) {
-					printf( '<option type="radio" name="shipping_method[%1$d]" data-index="%1$d" id="shipping_method_%1$d_%2$s" value="%3$s" class="shipping_method" %4$s >%5$s</option>',$index, sanitize_title( $method->id ), esc_attr( $method->id ), checked( $method->id, $chosen_method, false ), wc_cart_totals_shipping_method_label( $method ) );
+					// printf( '<option type="radio" name="shipping_method[%1$d]" data-index="%1$d" id="shipping_method_%1$d_%2$s" value="%3$s" class="shipping_method" %4$s >%5$s</option>',$index, sanitize_title( $method->id ), esc_attr( $method->id ), checked( $method->id, $chosen_method, false ), wc_cart_totals_shipping_method_label( $method ) );
+					printf( '<option type="radio" name-2="shipping_method[0]" data-index="%1$d" id="shipping_method_%1$d_%2$s" value="%3$s" class="shipping_method" %4$s >%5$s</option>',$index, sanitize_title( $method->id ), esc_attr( $method->id ), selected( $method->id, $chosen_method, false ), wc_cart_totals_shipping_method_label( $method ) );
 					do_action( 'woocommerce_after_shipping_rate', $method, $index );
 				}?>
 			</select>
+
 			<!-- <ul id="shipping_method"> -->
 				<?php foreach ( $available_methods as $method ) : ?>
 					<!-- <li> -->
@@ -41,6 +44,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<!-- </li> -->
 				<?php endforeach; ?>
 			<!-- </ul> -->
+
+
+
+
 		<?php elseif ( 1 === count( $available_methods ) ) :  ?>
 			<?php
 				$method = current( $available_methods );
