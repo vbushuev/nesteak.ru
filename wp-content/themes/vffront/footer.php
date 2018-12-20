@@ -99,7 +99,7 @@
 			$('.cart-discount.coupon-discount th').text('Скидка');
 			$('.cart-discount.coupon-discount td .amount').css('display','inline-block');
 
-			$('.cart_item > .product-subtotal,.cart_item > .product-total').each(function(){
+			$('.cart_item > .product-subtotal,.cart_item > .product-total:not(.discount-assigned)').addClass('discount-assigned').each(function(){
 				let price = parseFloat($(this).find('.amount').text().replace(/[\D]+/ig,''))/100;
 				let newPrice = (price*(100-percent)/100).toFixed(2);
 				console.debug('this price',percent,price,price*(100-percent)/100);
